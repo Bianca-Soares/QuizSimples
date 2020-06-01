@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     int quizCont = 1;
     int id;
 
+    final DataBasePerguntas db = new DataBasePerguntas(this);//Objeto DataBasePerguntas
+
+    ArrayList<ArrayList<String>> arrayLista = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,40 +43,45 @@ public class MainActivity extends AppCompatActivity {
         btnOp3 = findViewById(R.id.btnOp3);
         btnOp4 = findViewById(R.id.btnOp4);
 
-        final DataBasePerguntas db = new DataBasePerguntas(this);//Objeto DataBasePerguntas
-        Pergunta pergunta=new Pergunta();//Objeto pergunta
 
-        //Array para receber array de perguntas
-        ArrayList<ArrayList<String>> arrayLista = new ArrayList<>();
-
-        List<Pergunta> listaQuiz = db.getAllPerguntas();
-
-        String text= "";
-
-        for(Pergunta p: listaQuiz){
-            ArrayList<String> arrayQuizAtual = new ArrayList<>();
-            text = text+ "\nID : "+p.getId()+" \npergunta: "+p.getPergunta();
-            arrayQuizAtual.add(0,p.getPergunta());
-            arrayQuizAtual.add(1,p.getResposta());
-
-            arrayLista.add(arrayQuizAtual);
-        }
-        Log.d("ded"," "+arrayLista.get(0));
-        textPergunta.setText(text);
-        Log.d("ded"," "+db.getPerguntaCount());
-        //lista de questionário recebe a perguntas com as alternativas e a alternativa certa(CharSequence)
-
-//         exibirQuiz();
+        exibirQuiz();
     }
 
     public void exibirQuiz(){
-        DataBasePerguntas db = new DataBasePerguntas(this);
+        textCont.setText("Q " + db.getPerguntaCount());
+
+        Pergunta pergunta=new Pergunta();//Objeto pergunta
+
+        //Array para receber array de perguntas
+
+
+        List<Pergunta> listaQuiz = db.getAllPerguntas();
+
+        String text= "perguntas";
+
+        for(Pergunta p: listaQuiz){
+            ArrayList<String> arrayQuizAux = new ArrayList<>();
+
+            arrayQuizAux.add(0,p.getPergunta());
+            arrayQuizAux.add(1,p.getResposta());
+
+            arrayLista.add(arrayQuizAux);
+        }
+        ArrayList<String>  quizAux = new ArrayList<>();
+        quizAux = arrayLista.get(0);
+        Log.d("ded"," "+arrayLista.get(0));
+        textPergunta.setText(text);
+        Log.d("ded"," "+quizAux.get(1));
+        //lista de questionário recebe a perguntas com as alternativas e a alternativa certa(CharSequence)
+
+
+        // DataBasePerguntas db = new DataBasePerguntas(this);
         //List<Pergunta> listaQuiz = db.getAllPerguntas();
 
-        Pergunta perg = new Pergunta();
-        //Atualizar a numeração do quiz
+       // Pergunta perg = new Pergunta();
+      /*  //Atualizar a numeração do quiz
 //        String qtd = Integer.toString(db.getPerguntaCount());
-//        textCont.setText("Q "+2+" /"+ db.getPerguntaCount());
+        textCont.setText("Q "+2+" /"+ db.getPerguntaCount());
 
         List<Pergunta> listaQuiz = new ArrayList();
 
@@ -117,23 +125,26 @@ public class MainActivity extends AppCompatActivity {
     public void mais(View view){
 
         Intent intentMais = new Intent(getApplicationContext(), TelaResultado.class);
-        intentMais.putExtra("TOTAL_DE_PERGUNTAS", 3);//enviar total de per
+        intentMais.putExtra("TOTAL_DE_PERGUNTAS", db.getPerguntaCount());//enviar total de per
         startActivity(intentMais);
     }
 
     //analizar resposta do botão clicado //todos os botões são check
     public void check(View view){
        final DataBasePerguntas db = new DataBasePerguntas(this);
-        ArrayList<Pergunta> listaQuiz= new ArrayList<>();
+       // ArrayList<Pergunta> listaQuiz= new ArrayList<>();
+
         //pegar a escolha do usúario
         Button btnClicado = findViewById(view.getId());//pega o id do botão que ativou o check
         String textBtn = btnClicado.getText().toString(); // pega o texto do botão
 
-        String textAlerta;
+        String textAlerta="";
 
         //compara texto do botão clicado com a ressposta certa
         if(textBtn.equals(opCerta)){
+
             textAlerta = "Certa Resposta!";
+            textAlerta.toLowerCase();
             contCertas ++;
         }else{
             textAlerta= "Resposta Certa ...";
@@ -146,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(quizCont == 3){
+                if(quizCont == db.getPerguntaCount()){
                     //ir para tela resultado
                     Intent intent = new Intent(getApplicationContext(), TelaResultado.class);
                     intent.putExtra("TOTAL_DE_ACERTOS", contCertas);//enviar total de acertos para tela d resultado

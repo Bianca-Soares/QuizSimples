@@ -80,7 +80,7 @@ public class EditarQuiz extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), " Campos em branco", Toast.LENGTH_SHORT).show();
 
                 }else{
-                    dataBase.addPergunta(new Pergunta(editPergunta.getText().toString(), editResposta.getText().toString()));
+                    dataBase.addPergunta(new Pergunta(editPergunta.getText().toString().toUpperCase(), editResposta.getText().toString().toUpperCase()));
                     //Limpa edit
                     editPergunta.setText("");
                     editResposta.setText("");
@@ -98,8 +98,8 @@ public class EditarQuiz extends AppCompatActivity {
 
                 }else {
                     int id = Integer.parseInt(editId.getText().toString());
-                    String pergunta = editPergunta.getText().toString();
-                    String resposta = editResposta.getText().toString();
+                    String pergunta = editPergunta.getText().toString().toUpperCase();
+                    String resposta = editResposta.getText().toString().toUpperCase();
 
                     dataBase.updatePergunta(new Pergunta(id, pergunta, resposta));
 
