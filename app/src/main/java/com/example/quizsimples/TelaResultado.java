@@ -56,7 +56,7 @@ public class TelaResultado extends AppCompatActivity {
         {
             pontosMax = totalAcertos;
         }
-        textResult.setText(totalAcertos + " /"+ totalPerguntas);
+        textResult.setText("Resultado: "+totalAcertos + " /"+ totalPerguntas);
         textTotal.setText("Melhor pontuação:  "+ pontosMax);
 
         SharedPreferences.Editor editor = melhorPonto.edit();

@@ -6,31 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".TelaResultado">
 
-    <TextView
-        android:id="@+id/textResultado"
-        android:layout_width="124dp"
-        android:layout_height="39dp"
-        android:text="Resultado"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.229"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.072" />
 
     <TextView
         android:id="@+id/textResult"
-        android:layout_width="72dp"
-        android:layout_height="37dp"
+        android:layout_width="210dp"
+        android:layout_height="39dp"
         android:text=" 0 /0"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.672"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.072" />
+        app:layout_constraintVertical_bias="0.06" />
 
     <TextView
         android:id="@+id/textTotal"
@@ -40,16 +28,17 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.395"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.23" />
+        app:layout_constraintVertical_bias="0.234" />
 
     <Button
         android:id="@+id/btnTelaQuiz"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="118dp"
+        android:layout_height="42dp"
+        android:background="#1FACA9"
         android:text="Repetir"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -92,6 +81,7 @@
             android:layout_marginRight="116dp"
             android:text="Add Pergunta"
             android:textSize="18dp"
+            android:background="#1FACA9"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -114,14 +104,17 @@
         <Button
             android:id="@+id/btnEditar"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="166dp"
-            android:layout_height="54dp"
-            android:layout_marginTop="68dp"
+            android:layout_width="183dp"
+            android:layout_height="48dp"
+            android:background="#1FACA9"
             android:text="Editar Pergunta"
-            android:textSize="15dp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.771" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout

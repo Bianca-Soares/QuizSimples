@@ -23,12 +23,13 @@ public class MainActivity extends AppCompatActivity {
 
     String pergunta, opCerta;
     int contCertas = 0;
-    int quizCont = 1;
+    int contQuiz = 1;
+    int totalQuiz= 0;
     int id;
 
-    final DataBasePerguntas db = new DataBasePerguntas(this);//Objeto DataBasePerguntas
+    DataBasePerguntas db = new DataBasePerguntas(this);//Objeto DataBasePerguntas
 
-    ArrayList<ArrayList<String>> arrayLista = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,89 +38,67 @@ public class MainActivity extends AppCompatActivity {
         textCont = findViewById(R.id.textCont);
         textPergunta = findViewById(R.id.textPergunta);
 
+
         btnMais = findViewById(R.id.btnMais);
         btnOp1 = findViewById(R.id.btnOp1);
         btnOp2 = findViewById(R.id.btnOp2);
         btnOp3 = findViewById(R.id.btnOp3);
         btnOp4 = findViewById(R.id.btnOp4);
 
+        //contQuiz = db.getPerguntaCount();
+        Log.d("oncre","OnCreate");
 
-        exibirQuiz();
+        exibir();
     }
 
-    public void exibirQuiz(){
-        textCont.setText("Q " + db.getPerguntaCount());
+    private void exibir() {
+        Log.d("oncre","exibir()  ");
+        DataBasePerguntas db = new DataBasePerguntas(this);//Objeto DataBasePerguntas
 
-        Pergunta pergunta=new Pergunta();//Objeto pergunta
+        ArrayList<ArrayList<String>> arrayLista = new ArrayList<>();
 
-        //Array para receber array de perguntas
+        Pergunta pergunta = new Pergunta();//Objeto pergunta
 
-
+        if(db.getPerguntaCount()==0) {
+            db.addPergunta(new Pergunta("A finalidade da construção do PDTI é:\n" +
+                    "\n" +
+                    "A) Mapear os processos de Tecnologia da Informação.\n" +
+                    "B) Conhecer os custos pormenorizados dos ativos de TI.\n" +
+                    "C) Obter o alinhamento estratégico de TI.\n" +
+                    "D) Conceber os projetos tecnológicos de infraestrutura.\n", "C"));
+        }
+        //Lista para receber lista de perguntas
         List<Pergunta> listaQuiz = db.getAllPerguntas();
-
-        String text= "perguntas";
+        //passar para um array para usar index
 
         for(Pergunta p: listaQuiz){
             ArrayList<String> arrayQuizAux = new ArrayList<>();
 
-            arrayQuizAux.add(0,p.getPergunta());
-            arrayQuizAux.add(1,p.getResposta());
+            arrayQuizAux.add(0, String.valueOf(p.getId()));
+            arrayQuizAux.add(1,p.getPergunta());
+            arrayQuizAux.add(2,p.getResposta());
+
 
             arrayLista.add(arrayQuizAux);
         }
         ArrayList<String>  quizAux = new ArrayList<>();
-        quizAux = arrayLista.get(0);
-        Log.d("ded"," "+arrayLista.get(0));
-        textPergunta.setText(text);
-        Log.d("ded"," "+quizAux.get(1));
-        //lista de questionário recebe a perguntas com as alternativas e a alternativa certa(CharSequence)
 
-
-        // DataBasePerguntas db = new DataBasePerguntas(this);
-        //List<Pergunta> listaQuiz = db.getAllPerguntas();
-
-       // Pergunta perg = new Pergunta();
-      /*  //Atualizar a numeração do quiz
-//        String qtd = Integer.toString(db.getPerguntaCount());
-        textCont.setText("Q "+2+" /"+ db.getPerguntaCount());
-
-        List<Pergunta> listaQuiz = new ArrayList();
-
-
-        //gerar numero aleatório entre 0 e total(size) de quiz
         Random random = new Random();
-        List<Pergunta> quiz = new ArrayList();
-        perg= db.pegarPergunta(3);
+        int nAleatorio = random.nextInt(db.getPerguntaCount());// int aleat de 1 ate o TAM
 
-        for(Pergunta p: listaQuiz){
-            id= p.getId();
-            pergunta= p.getPergunta();
-            opCerta= p.getResposta();
-        }
-        textPergunta.setText(""+pergunta);
+        //array para pegar cada pergunta pergunta aleatoriamente
 
-        Log.d("deb"," "+id);
-        Log.d("deb"," "+opCerta);
-        Log.d("deb"," "+pergunta);
 
-//        Log.d("debi"," "+perg.getId());
-        Log.d("debi"," "+perg.getPergunta());
-        Log.d("debi"," "+perg.getResposta());
+        ArrayList<String> listaQuizAtual =  arrayLista.get(nAleatorio);//array com 0 pergunta e 1 resposta
+        Log.d("oncre","nAleatorio "+nAleatorio);
 
-        /*
-        int intRandom = random.nextInt(listaQuiz.size());
 
-        //pegar o quiz de posição aleatória intRandom
-        Pergunta quiz = listaQuiz.get(intRandom);
+        textCont.setText("ID " + listaQuizAtual.get(0));// id da pergunta da vez
+        textPergunta.setText(listaQuizAtual.get(1));// pergunta da vez
+        opCerta= listaQuizAtual.get(2);//opção certa
 
-        //Ordem dos elemetos {"Pergunta e alternativas", "opCerta"}
-        //o texto da pergunta recebe a posição 0 da lista quiz
-        textPergunta.setText(quiz.getPergunta()); // posição 0 pergunta
+        arrayLista.remove(nAleatorio);// remover pergunta já usada do array
 
-        opCerta =  quiz.getResposta(); // posição 1 opção certa
-
-        //Remover quiz respodido da lista de quiz
-        listaQuiz.remove(intRandom);*/
     }
 
     public void mais(View view){
@@ -136,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
         //pegar a escolha do usúario
         Button btnClicado = findViewById(view.getId());//pega o id do botão que ativou o check
-        String textBtn = btnClicado.getText().toString(); // pega o texto do botão
+        String textBtn = btnClicado.getText().toString().toUpperCase(); // pega o texto do botão
 
         String textAlerta="";
 
@@ -144,10 +123,10 @@ public class MainActivity extends AppCompatActivity {
         if(textBtn.equals(opCerta)){
 
             textAlerta = "Certa Resposta!";
-            textAlerta.toLowerCase();
+            opCerta="";
             contCertas ++;
         }else{
-            textAlerta= "Resposta Certa ...";
+            textAlerta= "Resposta é...";
         }
 
         //Criar alerta
@@ -157,20 +136,25 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(quizCont == db.getPerguntaCount()){
+                if(contQuiz == db.getPerguntaCount()){
                     //ir para tela resultado
                     Intent intent = new Intent(getApplicationContext(), TelaResultado.class);
                     intent.putExtra("TOTAL_DE_ACERTOS", contCertas);//enviar total de acertos para tela d resultado
-                    intent.putExtra("TOTAL_DE_PERGUNTAS", " "+db.getPerguntaCount());//enviar total de per
+                    intent.putExtra("TOTAL_DE_PERGUNTAS", db.getPerguntaCount());//enviar total de perguntas
+
                     startActivity(intent);
                 }else{
                     //ir para o próximo quiz
-                    quizCont++;
-                    exibirQuiz();
+                    contQuiz++;
+                    Log.d("oncre","else:   OnCreate");
+                    exibir();
+
+
                 }
             }
         });
         builder.setCancelable(false);
         builder.show();
+
     }
 }
