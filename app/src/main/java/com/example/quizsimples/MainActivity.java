@@ -8,9 +8,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,6 +30,17 @@ public class MainActivity extends AppCompatActivity {
     int contQuiz = 1;
     int totalQuiz= 0;
     int id;
+
+    private int counter = 0, total;
+
+    private List<Pergunta> perguntaList;
+    private  Pergunta perguntaAtual;
+
+    private static final String[] CATEGORIAS= new String[]{
+            "Categoria 1", "Categoria 2"
+    };
+
+    private MultiAutoCompleteTextView editCategoria;
 
     DataBasePerguntas db = new DataBasePerguntas(this);//Objeto DataBasePerguntas
 
@@ -45,13 +60,36 @@ public class MainActivity extends AppCompatActivity {
         btnOp3 = findViewById(R.id.btnOp3);
         btnOp4 = findViewById(R.id.btnOp4);
 
-        //contQuiz = db.getPerguntaCount();
-        Log.d("oncre","OnCreate");
+        Spinner spinnerCategorias = findViewById(R.id.spinnerCategorias);
+
+        perguntaList = db.getAllPerguntas();
+        total = perguntaList.size();
+
+        editarCategorias();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_expandable_list_item_1, CATEGORIAS);
+        spinnerCategorias.setAdapter(adapter);
 
         exibir();
     }
 
+    private void editarCategorias( ) {
+        int cont = 0;
+        String[] CATEGORIAS = new String[10];
+        if(cont < total) {
+
+            perguntaAtual = perguntaList.get(cont);
+            CATEGORIAS[cont] = perguntaAtual.getCategoria();
+            Log.d("oncre","exibir()  "+ CATEGORIAS[cont]+" "+total+" "+cont);
+            cont++;
+
+        }
+
+    }
+
     private void exibir() {
+
         Log.d("oncre","exibir()  ");
         DataBasePerguntas db = new DataBasePerguntas(this);//Objeto DataBasePerguntas
 
@@ -65,39 +103,22 @@ public class MainActivity extends AppCompatActivity {
                     "A) Mapear os processos de Tecnologia da Informação.\n" +
                     "B) Conhecer os custos pormenorizados dos ativos de TI.\n" +
                     "C) Obter o alinhamento estratégico de TI.\n" +
-                    "D) Conceber os projetos tecnológicos de infraestrutura.\n", "C"));
+                    "D) Conceber os projetos tecnológicos de infraestrutura.\n", "C","categoria x"));
         }
-        //Lista para receber lista de perguntas
-        List<Pergunta> listaQuiz = db.getAllPerguntas();
-        //passar para um array para usar index
 
-        for(Pergunta p: listaQuiz){
-            ArrayList<String> arrayQuizAux = new ArrayList<>();
+        if(counter < total) {
+            textCont.setText("Q " + (counter +1));
 
-            arrayQuizAux.add(0, String.valueOf(p.getId()));
-            arrayQuizAux.add(1,p.getPergunta());
-            arrayQuizAux.add(2,p.getResposta());
+            perguntaAtual = perguntaList.get(counter);
+            textPergunta.setText(perguntaAtual.getPergunta());
+            opCerta = perguntaAtual.getResposta().toUpperCase();
 
+            counter ++;
+            Log.d("total", String.valueOf(total));
 
-            arrayLista.add(arrayQuizAux);
+        }else{
+            finish();
         }
-        ArrayList<String>  quizAux = new ArrayList<>();
-
-        Random random = new Random();
-        int nAleatorio = random.nextInt(db.getPerguntaCount());// int aleat de 1 ate o TAM
-
-        //array para pegar cada pergunta pergunta aleatoriamente
-
-
-        ArrayList<String> listaQuizAtual =  arrayLista.get(nAleatorio);//array com 0 pergunta e 1 resposta
-        Log.d("oncre","nAleatorio "+nAleatorio);
-
-
-        textCont.setText("ID " + listaQuizAtual.get(0));// id da pergunta da vez
-        textPergunta.setText(listaQuizAtual.get(1));// pergunta da vez
-        opCerta= listaQuizAtual.get(2);//opção certa
-
-        arrayLista.remove(nAleatorio);// remover pergunta já usada do array
 
     }
 
@@ -106,6 +127,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intentMais = new Intent(getApplicationContext(), TelaResultado.class);
         intentMais.putExtra("TOTAL_DE_PERGUNTAS", db.getPerguntaCount());//enviar total de per
         startActivity(intentMais);
+    }
+    public void ok(View view){
+        //String input = spinnerCate .getText().toString();
+
+        exibir();
     }
 
     //analizar resposta do botão clicado //todos os botões são check

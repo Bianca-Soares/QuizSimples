@@ -6,15 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".EditarQuiz">
 
+
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="325dp"
         android:layout_height="66dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.03"><![CDATA[>
+        app:layout_constraintVertical_bias="0.007"><![CDATA[>
 
         ]]>
 
@@ -52,41 +53,33 @@
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="344dp"
-        android:layout_height="408dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <EditText
+        android:id="@+id/editPergunta"
+        android:layout_width="350dp"
+        android:layout_height="254dp"
+        android:layout_marginTop="72dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Pergunta e alternativas"
+        android:inputType="textMultiLine"
+        android:textColorHighlight="#1FD5A8"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.534"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.633">
+        app:layout_constraintTop_toBottomOf="@+id/editCategoria" />
 
-
-        <EditText
-            android:id="@+id/editPergunta"
-            android:layout_width="match_parent"
-            android:layout_height="341dp"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="Pergunta e alternativas"
-            android:inputType="textMultiLine" />
-
-        <EditText
-            android:id="@+id/editResposta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Resposta"
-            android:inputType="textPersonName" />
-    </LinearLayout>
+    <EditText
+        android:id="@+id/editCategoria"
+        android:layout_width="292dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="84dp"
+        android:ems="10"
+        android:hint="Categoria"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.184"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnQuiz"
@@ -130,6 +123,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.969" />
+
+    <Spinner
+        android:id="@+id/spinnerAlternativas"
+        android:layout_width="90dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.755"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editCategoria" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="173dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="24dp"
+        android:text=" Alternativa Correta:"
+        android:textSize="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.104"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editCategoria" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

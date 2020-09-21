@@ -21,6 +21,7 @@ public class DataBasePerguntas extends SQLiteOpenHelper {
     private static final String KEY_ID= "id";
     private static final String KEY_PERGUNTA= "pergunta";
     private static final String KEY_RESPOSTA= "resposta";
+    private static final String KEY_CATEGORIA= "categoria";
 
     //método construtor
     public DataBasePerguntas(Context context) {
@@ -34,7 +35,8 @@ public class DataBasePerguntas extends SQLiteOpenHelper {
         String CREATE_PERGUNTA_TABLE = " CREATE TABLE " + DB_TABLE + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, "
                 + KEY_PERGUNTA + " TEXT, "
-                + KEY_RESPOSTA + " TEXT "
+                + KEY_RESPOSTA + " TEXT, "
+                + KEY_CATEGORIA + " TEXT "
                 + ")";
         db.execSQL(CREATE_PERGUNTA_TABLE);
     }
@@ -54,6 +56,7 @@ public class DataBasePerguntas extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_PERGUNTA, pergunta.getPergunta());
         values.put(KEY_RESPOSTA, pergunta.getResposta());
+        values.put(KEY_CATEGORIA, pergunta.getCategoria());
 
         db.insert(DB_TABLE, null, values);
         db.close();
@@ -64,7 +67,7 @@ public class DataBasePerguntas extends SQLiteOpenHelper {
     Pergunta pegarPergunta(int id) {
         SQLiteDatabase db = this.getReadableDatabase();//modo leitura
 
-        Cursor cursor = db.query(DB_TABLE, new String[]{KEY_ID, KEY_PERGUNTA, KEY_RESPOSTA }, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null,null, null);
+        Cursor cursor = db.query(DB_TABLE, new String[]{KEY_ID, KEY_PERGUNTA, KEY_RESPOSTA, KEY_CATEGORIA }, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null,null, null);
 
         Pergunta pergunta = new Pergunta();
 
@@ -74,6 +77,7 @@ public class DataBasePerguntas extends SQLiteOpenHelper {
                 pergunta.setId(cursor.getInt(0));
                 pergunta.setPergunta(cursor.getString(1));
                 pergunta.setResposta(cursor.getString(2));
+                pergunta.setCategoria(cursor.getString(3));
 
             }else{
                 return null;
@@ -101,6 +105,7 @@ public class DataBasePerguntas extends SQLiteOpenHelper {
                 pergunta.setId(Integer.parseInt(cursor.getString(0)));
                 pergunta.setPergunta(cursor.getString(1));
                 pergunta.setResposta(cursor.getString(2));
+                pergunta.setCategoria(cursor.getString(3));
 
                 perguntaArray.add(pergunta);
             }
@@ -117,6 +122,7 @@ public class DataBasePerguntas extends SQLiteOpenHelper {
         ContentValues values =  new ContentValues();
         values.put(KEY_PERGUNTA, pergunta.getPergunta());
         values.put(KEY_RESPOSTA, pergunta.getResposta());
+        values.put(KEY_CATEGORIA, pergunta.getCategoria());
 
         return db.update(DB_TABLE, values, KEY_ID + "=?", new String[] {String.valueOf(pergunta.getId())});
     }
@@ -135,6 +141,5 @@ public class DataBasePerguntas extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(countQuery, null);
 
         return cursor.getCount();
-
     }
 }
